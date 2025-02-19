@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrognosPogodi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/styles/style.css">
+</head>
+<body>
+    <header>
+        <h1>Прогноз погоди</h1> 
+    </header>
+    <main>
+        <section id="search">
+            <h2>Введіть назву міста, щоб дізнатись який прогноз погоди</h2>
+            <input type="text" id="city-input" placeholder="Наприклад, Київ">
+            <button id="search-btn">Пошук</button>
+        </section>
+
+        <section id="forecast-options">
+            <h2>Оберіть прогноз</h2>
+            <button id="three-day-btn">Прогноз на 3 дні</button>
+            <button id="seven-day-btn">Прогноз на 5 днів</button>
+        </section>
+
+        <section id="forecast">
+            <h2>Прогноз погоди</h2>
+            <div id="forecast-container"></div>
+        </section>
+    </main>
+    <script>
+        let forecastType = 3; // Глобальна змінна для типу прогнозу (3 або 7 днів)
+
+const searchBtn = document.getElementById('search-btn');
+const threeDayBtn = document.getElementById('three-day-btn');
+const sevenDayBtn = document.getElementById('seven-day-btn');
+
+// Обробник для кнопки "Пошук"
+searchBtn.addEventListener('click', async () => {
+    const city = document.getElementById('city-input').value.trim();
+    if (!city) {
+        alert('Будь ласка, введіть назву міста!');
+        return;
+    }
+
+    const apiUrl = `/forecast?city=${city}&days=${forecastType}`;
+
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error('Не вдалося отримати дані. Перевірте назву міста.');
+        }
+        const data = await response.json();
+        displayForecast(data);
+    } catch (error) {
+        alert(error.message);
+    }
+});
+
+// Обробник для кнопки "Прогноз на 3 дні"
+threeDayBtn.addEventListener('click', () => {
+    forecastType = 3;
+    highlightButton(threeDayBtn);
+    console.log(`Прогноз на ${forecastType} дні`);
+    // Автоматично оновлюємо прогноз після зміни типу
+    updateForecast();
+});
+
+// Обробник для кнопки "Прогноз на 7 днів"
+sevenDayBtn.addEventListener('click', () => {
+    forecastType = 8;
+    highlightButton(sevenDayBtn);
+    console.log(`Прогноз на ${forecastType} днів`);
+    // Автоматично оновлюємо прогноз після зміни типу
+    updateForecast();
+});
+
+// Функція для підсвічування вибраної кнопки
+function highlightButton(button) {
+    document.querySelectorAll('#forecast-options button').forEach(btn => btn.classList.remove('active'));
+    button.classList.add('active');
+}
+
+// Функція для оновлення прогнозу
+async function updateForecast() {
+    const city = document.getElementById('city-input').value.trim();
+    if (!city) {
+        alert('Будь ласка, введіть назву міста!');
+        return;
+    }
+
+    const apiUrl = `/forecast?city=${city}&days=${forecastType}`;
+    
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error('Не вдалося отримати дані. Перевірте назву міста.');
+        }
+        const data = await response.json();
+        displayForecast(data);
+    } catch (error) {
+        alert(error.message);
+    }
+}
+
+// Функція для відображення прогнозу погоди
+function displayForecast(data) {
+    const forecastContainer = document.getElementById('forecast-container');
+    forecastContainer.innerHTML = ''; // Очистити попередній вміст
+
+    const groupedData = {};
+    data.list.forEach(item => {
+        const date = new Date(item.dt * 1000).toLocaleDateString('uk-UA', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        if (!groupedData[date]) {
+            groupedData[date] = [];
+        }
+        groupedData[date].push(item);
+    });
+
+    const table = document.createElement('table');
+    table.className = 'forecast-table';
+    table.innerHTML = `
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Ранок</th>
+                <th>День</th>
+                <th>Вечір</th>
+                <th>Ніч</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    `;
+
+    const tableBody = table.querySelector('tbody');
+
+    Object.keys(groupedData).slice(0, forecastType).forEach(date => {
+        const row = document.createElement('tr');
+        const timeframes = { morning: 'Немає даних ', afternoon: 'Немає даних', evening: 'Немає даних', night: 'Немає даних' };
+        const icons = { morning: '', afternoon: '', evening: '', night: '' };
+
+        groupedData[date].forEach(item => {
+            const hour = new Date(item.dt * 1000).getHours();
+            const temp = `${item.main.temp}&deg;C`;
+            const description = item.weather[0].description;
+            const icon = item.weather[0].icon;
+            const iconUrl = `http://openweathermap.org/img/wn/${icon}.png`;
+
+            if (hour >= 6 && hour < 12) {
+                timeframes.morning = `${temp} (${description})`;
+                icons.morning = `<img src="${iconUrl}" alt="${description}" class="weather-icon">`;
+            } else if (hour >= 12 && hour < 18) {
+                timeframes.afternoon = `${temp} (${description})`;
+                icons.afternoon = `<img src="${iconUrl}" alt="${description}" class="weather-icon">`;
+            } else if (hour >= 18 && hour < 24) {
+                timeframes.evening = `${temp} (${description})`;
+                icons.evening = `<img src="${iconUrl}" alt="${description}" class="weather-icon">`;
+            } else {
+                timeframes.night = `${temp} (${description})`;
+                icons.night = `<img src="${iconUrl}" alt="${description}" class="weather-icon">`;
+            }
+        });
+
+        row.innerHTML = `
+            <td>${date}</td>
+            <td>${icons.morning} ${timeframes.morning}</td>
+            <td>${icons.afternoon} ${timeframes.afternoon}</td>
+            <td>${icons.evening} ${timeframes.evening}</td>
+            <td>${icons.night} ${timeframes.night}</td>
+        `;
+        tableBody.appendChild(row);
+    });
+
+    forecastContainer.appendChild(table);
+}
+
+    </script>
+    
+</body>
+</html>
+
+

@@ -1,0 +1,388 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto Slab", serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+}
+
+h1, #city-input{
+    font-family: "Playfair Display", serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+}
+
+
+
+/* Тіло */
+body {
+    background-color: #9191df98;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Хедер */
+header {
+    background-color: #12581c;
+    color: white;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+/* Основний вміст */
+main {
+    padding: 2rem;
+}
+
+/* Блок пошуку */
+#search {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+#search h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #195d23;
+}
+
+#city-input {
+    padding: 0.5rem;
+    width: 60%;
+    max-width: 400px;
+    margin-right: 1rem;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+#search-btn {
+    padding: 0.5rem 1rem;
+    background-color: #444bb4;
+    color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+#search-btn:hover {
+    background-color: #596bc5;
+}
+
+/* Секція прогнозу */
+#forecast {
+    margin-bottom: 2rem;
+}
+
+#forecast h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #2d6a36;
+    text-align: center;
+}
+
+#forecast-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.forecast-card {
+    background-color: rgb(255, 255, 255);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    padding: 1rem;
+    text-align: center;
+    font-size: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.forecast-card:hover {
+    transform: translateY(-10px);
+}
+
+.forecast-card .day {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #3a7d44;
+}
+
+.forecast-card .temp {
+    font-size: 2rem;
+    margin: 1rem 0;
+}
+
+.forecast-card .description {
+    font-size: 1rem;
+    color: #777;
+}
+
+/* Медіа запити для мобільних пристроїв */
+@media (max-width: 768px) {
+    #city-input {
+        width: 80%;
+    }
+
+    .forecast-card {
+        width: 200px;
+    }
+}
+
+.forecast-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    text-align: left;
+}
+
+.forecast-table th,
+.forecast-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+}
+
+.forecast-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.forecast-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.forecast-table img.weather-icon {
+    width: 25px;
+    height: 25px;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+.forecast-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.forecast-table th, .forecast-table td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.forecast-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.forecast-table td img.weather-icon {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.forecast-table td {
+    font-size: 14px;
+}
+
+.forecast-table tr:hover {
+    background-color: #f9f9f9;
+}
+
+.forecast-table td:not(:empty) {
+    background-color: #e8f4fc;
+}
+
+
+#search-btn, #three-day-btn, #seven-day-btn {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #46b486;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#search-btn:hover, #three-day-btn:hover, #seven-day-btn:hover {
+    background-color: #85d6b7;
+}
+
+#forecast-options button.active {
+    background-color: #85d6b7;
+}
+
+#forecast {
+    text-align: center;
+}
+
+.forecast-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.forecast-table th, .forecast-table td {
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.forecast-table th {
+    background-color: #4682b4;
+    color: #fff;
+}
+
+.forecast-table td {
+    background-color: #f9f9f9;
+}
+
+.weather-icon {
+    width: 40px;
+    height: 40px;
+    vertical-align: middle;
+}
+
+.forecast-table th, .forecast-table td {
+    font-size: 0.9rem;
+    padding: 0.3rem;
+}
+
+/* Основні стилі для сторінки */
+body {
+    font-family: 'Roboto Slab', serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+header {
+    background-color: #3b82f6;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    margin: 0;
+}
+
+main {
+    padding: 20px;
+}
+
+h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: #333;
+    margin-top: 20px;
+}
+
+#search {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#city-input {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 60%;
+    max-width: 400px;
+}
+
+#search-btn {
+    background-color: #3b82f6;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+#search-btn:hover {
+    background-color: #2563eb;
+}
+
+#forecast-options {
+    text-align: center;
+    margin-top: 30px;
+}
+
+#forecast-options button {
+    background-color: #e2e8f0;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin: 0 10px;
+}
+
+#forecast-options button.active {
+    background-color: #3b82f6;
+    color: white;
+}
+
+#forecast-options button:hover {
+    background-color: #2563eb;
+    color: white;
+}
+
+#forecast-container {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.forecast-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border: 1px solid #ccc;
+}
+
+.forecast-table th, .forecast-table td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ccc;
+}
+
+.forecast-table th {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.weather-icon {
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+@media (max-width: 768px) {
+    #city-input {
+        width: 80%;
+    }
+
+    #forecast-options button {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    .forecast-table th, .forecast-table td {
+        font-size: 0.9rem;
+    }
+}
