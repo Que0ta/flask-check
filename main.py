@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 import requests, os
 from dotenv import load_dotenv
+from module import *
 
 load_dotenv()
 
@@ -13,6 +14,11 @@ API_KEY = os.getenv("API")
 @app.route('/')
 def home():
     return render_template('index.html')
+
+@app.route('/check')
+def check():
+    result = start()
+    return result
 
 @app.route('/forecast', methods=['GET'])
 def get_forecast():
